@@ -3,110 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dynamic8 0.25m Short MFi Lightning Cable</title>
+<title>Dynamic8 SEO/AEO Page Generator</title>
 <style>
-  /* --- DESIGN SYSTEM START --- */
-  body { margin: 0; padding: 20px; background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-  .d8-container { line-height: 1.7; color: #1a1a1a; max-width: 1000px; margin: 0 auto; text-align: left; }
-  .d8-container * { box-sizing: border-box; }
+  /* APP UI STYLES (For the Tool Interface) */
+  body { font-family: sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
   
-  /* Logo */
+  /* Left Side: Editor */
+  .editor-panel { width: 40%; background: #f4f4f9; padding: 20px; overflow-y: auto; border-right: 2px solid #ddd; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
+  .editor-panel h2 { margin-top: 0; color: #333; }
+  .form-group { margin-bottom: 15px; }
+  label { display: block; font-weight: bold; font-size: 12px; margin-bottom: 5px; color: #555; text-transform: uppercase; }
+  input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+  textarea { resize: vertical; height: 80px; }
+  .btn-generate { background: #0044cc; color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+  .btn-generate:hover { background: #003399; }
+
+  /* Right Side: Live Preview */
+  .preview-panel { width: 60%; padding: 0; overflow-y: auto; background: white; position: relative; }
+  .preview-header { background: #222; color: white; padding: 10px 20px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+  .btn-copy { background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+
+  /* --- YOUR ORIGINAL PRODUCT STYLES (INJECTED INTO PREVIEW) --- */
+  #preview-content { padding: 20px; }
+  
+  /* V16.0 DARK TECH UX/UI */
+  .d8-container { line-height: 1.7; color: #1a1a1a; max-width: 800px; margin: 0 auto; text-align: left; }
   .d8-logo { display: block; margin-bottom: 20px; max-width: 150px; height: auto; }
-
-  /* Highlight Box */
-  .d8-bluf-box { background: linear-gradient(to right, #f9f9f9, #ffffff); border-left: 4px solid #111; padding: 28px; margin-bottom: 40px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .d8-bluf-box { background: linear-gradient(to right, #f9f9f9, #ffffff); border-left: 4px solid #111; padding: 20px; margin-bottom: 30px; border-radius: 6px; }
   .d8-bluf-list { list-style: none; padding: 0; margin: 0; }
-  .d8-bluf-list li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+  .d8-bluf-list li { position: relative; padding-left: 25px; margin-bottom: 10px; font-size: 15px; }
   .d8-bluf-list li::before { content: "★"; position: absolute; left: 0; color: #000; }
+  .d8-verdict { background: #eef4ff; border: 1px solid #dce9fc; padding: 15px; border-radius: 6px; font-weight: 600; color: #0044cc; margin-bottom: 25px; }
+  .d8-section-title { font-size: 20px; font-weight: 700; margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid #eaeaea; padding-bottom: 10px; }
+  .d8-tech-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
+  .d8-tech-card { background: #15202b; border: 1px solid #2c3e50; border-radius: 10px; padding: 20px; color: white; }
+  .d8-tech-value { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+  .d8-tech-label { font-size: 10px; text-transform: uppercase; color: #aab8c2; letter-spacing: 1px; }
+  .d8-trust-badge { display: flex; gap: 15px; background: #15202b; padding: 20px; border-radius: 10px; color: white; align-items: center; margin: 30px 0; }
+  details { border-bottom: 1px solid #eee; padding: 15px 0; }
+  summary { font-weight: 600; cursor: pointer; }
 
-  /* Tech Grid */
-  .d8-tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin: 40px 0; }
-  .d8-tech-card { background: #15202b; color: white; padding: 25px; border-radius: 12px; }
-  .d8-tech-value { font-size: 18px; font-weight: bold; margin: 10px 0; color: #fff; }
-  .d8-tech-label { font-size: 11px; text-transform: uppercase; color: #8899a6; letter-spacing: 1px; }
+  @media (max-width: 768px) { body { flex-direction: column; height: auto; } .editor-panel, .preview-panel { width: 100%; height: auto; } }
+</style>
+</head>
+<body>
 
-  /* Headers */
-  h1 { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
-  h3 { font-size: 16px; font-weight: 500; color: #555; margin-top: 0; }
-  .d8-section-title { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-top: 50px; font-size: 20px; font-weight: 700; }
+<div class="editor-panel">
+  <h2>🛠️ SEO/AEO Generator</h2>
+  <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Enter product details to generate Schema-optimized HTML.</p>
 
-  /* Trust Badge */
-  .d8-trust-badge { display: flex; gap: 15px; background: #f0f4f8; padding: 20px; border-radius: 8px; align-items: center; margin: 40px 0; border: 1px solid #dce4ec; }
-  
-  /* FAQ */
-  details { padding: 15px 0; border-bottom: 1px solid #eee; }
-  summary { font-weight: 600; cursor: pointer; font-size: 16px; }
-  
-  /* --- DESIGN SYSTEM END --- */
+  <div class="form-group">
+    <label>Product Name (H1 + Title)</label>
+    <input type="text" id="inp_name" placeholder="e.g. Dynamic8 0.25m Cable" value="Dynamic8 0.25m Short MFi Lightning Cable">
+  </div>
+
+  <div class="form-group">
+    <label>Subtitle (H3)</label>
+    <input type="text" id="inp_subtitle" placeholder="Key benefits..." value="Tangle-Free for CarPlay & Power Banks | 2.4A Fast Charge">
+  </div>
+
+  <div class="form-group">
+    <label>Image URL</label>
+    <input type="text" id="inp_img" value="https://dynamic8.com/cdn/shop/files/logo.png?v=1664079649&width=220">
+  </div>
+
+  <div class="form-group">
+    <label>SEO Description (Meta + Schema)</label>
+    <textarea id="inp_desc">Eliminate cable clutter with the Dynamic8 0.25m Short Lightning Cable. MFi Certified C189 chipset for safe CarPlay and Power Bank use.</textarea>
+  </div>
+
+  <div class="form-group">
+    <label>Price (USD)</label>
+    <input type="number" id="inp_price" value="19.99">
+  </div>
+
+  <div class="form-group">
+    <label>SKU</label>
+    <input type="text" id="inp_sku" value="D8-LGT-2025-025">
+  </div>
+
+  <hr>
+  <h3>Tech Specs</h3>
+  <div class="form-group"><label>Certification</label><input type="text" id="inp_cert" value="C189 MFi"></div>
+  <div class="form-group"><label>Performance</label><input type="text" id="inp_perf" value="2.4A / 12W"></div>
+  <div class="form-group"><label>Length</label><input type="text" id="inp_len" value="0.25m"></div>
+
+  <button class="btn-generate" onclick="updatePreview()">🔄 Refresh Preview & Code</button>
+</div>
+
+<div class="preview-panel">
+  <div class="preview-header">
+    <span>Live Preview</span>
+    <button class="btn-copy" onclick="copyCode()">Copy HTML Code</button>
+  </div>
+  <div id="preview-content">
+    </div>
+</div>
+
+<script>
+// THIS FUNCTION GENERATES THE HTML + SCHEMA
+function updatePreview() {
+  const name = document.getElementById('inp_name').value;
+  const subtitle = document.getElementById('inp_subtitle').value;
+  const img = document.getElementById('inp_img').value;
+  const desc = document.getElementById('inp_desc').value;
+  const price = document.getElementById('inp_price').value;
+  const sku = document.getElementById('inp_sku').value;
+  const cert = document.getElementById('inp_cert').value;
+  const perf = document.getElementById('inp_perf').value;
+  const len = document.getElementById('inp_len').value;
+
+  // 1. GENERATE THE HTML STRUCTURE
+  let html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${name}</title>
+<meta name="description" content="${desc}">
+<style>
+  /* PASTE YOUR CSS HERE (Included in the full output but hidden in this string for brevity) */
+  body { margin: 0; padding: 20px; background-color: #ffffff; font-family: -apple-system, sans-serif; }
+  .d8-container { max-width: 800px; margin: 0 auto; line-height: 1.7; color: #1a1a1a; }
+  .d8-logo { display: block; margin-bottom: 20px; max-width: 150px; }
+  .d8-section-title { font-size: 22px; font-weight: 700; border-bottom: 1px solid #eee; margin-top: 40px; }
+  .d8-tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
+  .d8-tech-card { background: #15202b; color: white; padding: 20px; border-radius: 12px; }
+  .d8-tech-value { font-size: 18px; font-weight: bold; }
+  .d8-tech-label { font-size: 11px; text-transform: uppercase; color: #aab8c2; }
+  .d8-trust-badge { display: flex; gap: 20px; background: #15202b; padding: 25px; border-radius: 12px; color: white; margin-top: 40px; }
 </style>
 </head>
 <body>
 
 <div class="d8-container">
+  <img src="${img}" alt="${name}" class="d8-logo">
   
-  <img src="https://dynamic8.com/cdn/shop/files/logo.png?v=1664079649&width=220" alt="Dynamic8 Logo" class="d8-logo">
+  <h1 class="d8-section-title" style="border:none;">${name}</h1>
+  <h3 style="margin-top:-15px; color:#555;">${subtitle}</h3>
 
-  <h1>Dynamic8 0.25m Short MFi Lightning Cable</h1>
-  <h3>Tangle-Free for CarPlay & Power Banks | 2.4A Fast Charge</h3>
+  <p><strong>Verdict:</strong> ${desc}</p>
 
-  <div class="d8-bluf-box">
-    <strong>2025 Travel Series Highlights</strong>
-    <ul class="d8-bluf-list" style="margin-top: 15px;">
-      <li><strong>Certified Safety:</strong> Official Apple C189 Chipset.</li>
-      <li><strong>Engineered Strength:</strong> Withstands 10,000+ bends.</li>
-      <li><strong>Precision Fit:</strong> 4.5mm ultra-slim connector.</li>
-      <li><strong>Fast Charging:</strong> 12W (2.4A) speed.</li>
-    </ul>
-  </div>
-
-  <p><strong>The Cure for Cable Clutter.</strong> Designed in Shenzhen for the 2025 Travel Series, this cable utilizes the genuine C189 Chipset to ensure perfect sync with Apple CarPlay.</p>
-  
   <h2 class="d8-section-title">Technical Specs</h2>
   <div class="d8-tech-grid">
-    <div class="d8-tech-card">
-      <div class="d8-tech-label">Certification</div>
-      <div class="d8-tech-value">C189 MFi</div>
-      <div>100% iOS Safe</div>
-    </div>
-    <div class="d8-tech-card">
-      <div class="d8-tech-label">Speed</div>
-      <div class="d8-tech-value">2.4A / 12W</div>
-      <div>480Mbps Sync</div>
-    </div>
-    <div class="d8-tech-card">
-      <div class="d8-tech-label">Length</div>
-      <div class="d8-tech-value">0.25 Meters</div>
-      <div>Ultra Short</div>
-    </div>
-    <div class="d8-tech-card">
-      <div class="d8-tech-label">Origin</div>
-      <div class="d8-tech-value">Shenzhen</div>
-      <div>Batch 2025</div>
-    </div>
+    <div class="d8-tech-card"><div class="d8-tech-label">Certification</div><div class="d8-tech-value">${cert}</div></div>
+    <div class="d8-tech-card"><div class="d8-tech-label">Performance</div><div class="d8-tech-value">${perf}</div></div>
+    <div class="d8-tech-card"><div class="d8-tech-label">Length</div><div class="d8-tech-value">${len}</div></div>
+    <div class="d8-tech-card"><div class="d8-tech-label">SKU</div><div class="d8-tech-value">${sku}</div></div>
   </div>
 
   <div class="d8-trust-badge">
-    <div style="font-size: 24px;">🛡️</div>
-    <div>
-      <strong>Shenzhen Voltage Lab Validated</strong><br>
-      Ships in 24h • 30-Day Returns • 1-Year Warranty.
-    </div>
+    <div style="font-size:30px;">🛡️</div>
+    <div><strong>Dynamic8 Verified</strong><br>Ships in 24h • 1-Year Warranty</div>
   </div>
 
-  <h2 class="d8-section-title">Frequently Asked Questions</h2>
-  <details>
-    <summary>What is this short cable used for?</summary>
-    <p>Perfect for connecting your iPhone to a portable power bank or CarPlay without messy wires.</p>
-  </details>
-  <details>
-    <summary>Does it work with CarPlay?</summary>
-    <p>Yes, it supports full data transfer required for CarPlay.</p>
-  </details>
-  <details>
-    <summary>Is it MFi Certified?</summary>
-    <p>Yes, it uses the original C189 chip from Apple.</p>
-  </details>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "${name}",
+    "description": "${desc}",
+    "sku": "${sku}",
+    "image": ["${img}"],
+    "brand": { "@type": "Brand", "name": "Dynamic8" },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "${price}",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+  <\/script>
 
 </div>
+</body>
+</html>`;
+
+  // Update the Preview Window
+  document.getElementById('preview-content').innerHTML = html;
+  
+  // Save generated code to a hidden variable for copying
+  window.generatedCode = html;
+}
+
+function copyCode() {
+  if (!window.generatedCode) updatePreview();
+  navigator.clipboard.writeText(window.generatedCode);
+  alert("HTML Code Copied! You can now paste this into GitHub as a new file.");
+}
+
+// Initialize on load
+updatePreview();
+</script>
+
 </body>
 </html>
