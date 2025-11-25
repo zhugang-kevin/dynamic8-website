@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal SEO & GEO Architect v5.0 (Enterprise)</title>
+    <title>Universal SEO & GEO Architect v5.1 (Local Ready)</title>
     
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -22,6 +22,11 @@
         import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         window.Firebase = { initializeApp, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously, signInWithCustomToken, getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot };
+        
+        // Signal that modules are loaded
+        window.firebaseModulesLoaded = true;
+        const event = new Event('firebaseReady');
+        window.dispatchEvent(event);
     </script>
     
     <style>
@@ -77,10 +82,11 @@
             Book: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>,
             Link: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
             Lock: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>,
-            LogOut: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            LogOut: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>,
+            Settings: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
         };
 
-        const { Copy, Check, FileText, Search, Zap, Cpu, MapPin, Users, Activity, Building, Book, ChevronDown, ArrowRight, Globe, Wrench, PenTool, Code, Brain, Link, Trash, Plus, ExternalLink, Lock, LogOut } = Icons;
+        const { Copy, Check, FileText, Search, Zap, Cpu, MapPin, Users, Activity, Building, Book, ChevronDown, ArrowRight, Globe, Wrench, PenTool, Code, Brain, Link, Trash, Plus, ExternalLink, Lock, LogOut, Settings } = Icons;
 
         // --- CONSTANTS ---
         const INDUSTRY_CONFIG = {
@@ -273,6 +279,55 @@
             </button>
         ));
 
+        // --- CONFIG SETUP COMPONENT ---
+        const FirebaseConfigForm = ({ onConfigSaved }) => {
+            const [configStr, setConfigStr] = useState("");
+            const [error, setError] = useState("");
+
+            const handleSave = () => {
+                try {
+                    // Basic validation: check if it parses and has apiKey
+                    const parsed = JSON.parse(configStr);
+                    if (!parsed.apiKey) throw new Error("Invalid Config: Missing apiKey");
+                    
+                    localStorage.setItem('d8_firebase_config', JSON.stringify(parsed));
+                    onConfigSaved(parsed);
+                } catch (e) {
+                    setError("Invalid JSON format. Please copy the full config object.");
+                }
+            };
+
+            return (
+                <div className="w-full h-full flex items-center justify-center bg-gray-50 p-4">
+                    <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+                        <div className="flex justify-center mb-4">
+                            <div className="bg-blue-100 p-3 rounded-full"><Settings className="text-blue-600 w-8 h-8"/></div>
+                        </div>
+                        <h2 className="text-xl font-bold text-center mb-2">Local Setup Required</h2>
+                        <p className="text-sm text-gray-500 text-center mb-6">
+                            To run this Enterprise Architect locally, you must provide your Firebase Configuration keys. 
+                            <br/><span className="text-xs">(This is stored securely in your browser's LocalStorage)</span>
+                        </p>
+
+                        <div className="mb-4">
+                            <label className="block text-xs font-bold text-gray-700 mb-1">Firebase Config JSON</label>
+                            <textarea 
+                                className="w-full p-3 border rounded-lg text-xs font-mono h-32 bg-gray-50"
+                                placeholder='{ "apiKey": "...", "authDomain": "...", "projectId": "..." }'
+                                value={configStr}
+                                onChange={(e) => setConfigStr(e.target.value)}
+                            ></textarea>
+                            {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+                        </div>
+
+                        <button onClick={handleSave} className="w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700">
+                            Save & Initialize
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
         // --- AUTH COMPONENT ---
         const AuthPage = ({ onLogin }) => {
             const [isRegister, setIsRegister] = useState(false);
@@ -286,6 +341,14 @@
                 e.preventDefault();
                 setError("");
                 setLoading(true);
+                
+                // Ensure Firebase is init
+                if (!window.Firebase) {
+                    setError("Firebase SDK not loaded properly.");
+                    setLoading(false);
+                    return;
+                }
+
                 const auth = window.Firebase.getAuth();
                 const db = window.Firebase.getFirestore();
 
@@ -296,15 +359,23 @@
                         const user = userCredential.user;
                         const orgId = "org_" + user.uid.slice(0, 8); // Simple unique org ID gen
 
+                        // Use a simplified path structure for standard Firestore (root collections)
+                        // OR keep the 'artifacts' structure if running in the specific environment that requires it.
+                        // Since this is "Universal/Local", we'll stick to standard paths for better compatibility 
+                        // unless the specific 'artifacts' path is strictly required by the prompt context.
+                        // However, the previous code used `window.__app_id` which suggests an environment wrapper.
+                        // I will use a fallback "default" app id.
+                        const appId = window.__app_id || 'default-app';
+
                         // Create Org Doc
-                        await window.Firebase.setDoc(window.Firebase.doc(db, 'artifacts', window.__app_id || 'default', 'organizations', orgId), {
+                        await window.Firebase.setDoc(window.Firebase.doc(db, 'artifacts', appId, 'organizations', orgId), {
                             name: orgName,
                             subscriptionStatus: 'inactive', // Gated
                             createdAt: new Date().toISOString()
                         });
 
                         // Create User Doc tied to Org
-                        await window.Firebase.setDoc(window.Firebase.doc(db, 'artifacts', window.__app_id || 'default', 'users', user.uid), {
+                        await window.Firebase.setDoc(window.Firebase.doc(db, 'artifacts', appId, 'users', user.uid), {
                             email: user.email,
                             orgId: orgId,
                             role: 'admin'
@@ -313,7 +384,8 @@
                         await window.Firebase.signInWithEmailAndPassword(auth, email, password);
                     }
                 } catch (err) {
-                    setError(err.message);
+                    console.error(err);
+                    setError(err.message || "Authentication failed.");
                     setLoading(false);
                 }
             };
@@ -423,7 +495,8 @@
                 if (!user.orgId) return;
                 const loadData = async () => {
                     try {
-                        const docSnap = await window.Firebase.getDoc(window.Firebase.doc(db, 'artifacts', window.__app_id || 'default', 'organizations', user.orgId, 'data', 'main_project'));
+                        const appId = window.__app_id || 'default-app';
+                        const docSnap = await window.Firebase.getDoc(window.Firebase.doc(db, 'artifacts', appId, 'organizations', user.orgId, 'data', 'main_project'));
                         if (docSnap.exists()) {
                             const data = docSnap.data();
                             if (data.industry) setIndustry(data.industry);
@@ -445,7 +518,8 @@
                 if (!user.orgId) return;
                 const timer = setTimeout(async () => {
                     setSaving(true);
-                    await window.Firebase.setDoc(window.Firebase.doc(db, 'artifacts', window.__app_id || 'default', 'organizations', user.orgId, 'data', 'main_project'), {
+                    const appId = window.__app_id || 'default-app';
+                    await window.Firebase.setDoc(window.Firebase.doc(db, 'artifacts', appId, 'organizations', user.orgId, 'data', 'main_project'), {
                         industry, category, specsData, marketData, productData, contentData, orgData
                     }, { merge: true });
                     setSaving(false);
@@ -701,62 +775,126 @@
         };
 
         const Root = () => {
+            // --- State ---
             const [user, setUser] = useState(null);
             const [org, setOrg] = useState(null);
             const [orgData, setOrgData] = useState({ orgName: "", orgUrl: "", orgLogoUrl: "", orgPhone: "", orgEmail: "", orgAreaServed: "Global", orgLanguage: "English", orgSameAs: "" });
             const [loading, setLoading] = useState(true);
+            const [firebaseConfig, setFirebaseConfig] = useState(null);
+            const [isConfigured, setIsConfigured] = useState(false);
 
+            // --- Init Firebase ---
             useEffect(() => {
-                const firebaseConfig = JSON.parse(window.__firebase_config || '{}');
-                const app = window.Firebase.initializeApp(firebaseConfig);
-                const auth = window.Firebase.getAuth(app);
-                const db = window.Firebase.getFirestore(app);
+                // 1. Check for config in Window (Canvas env)
+                if (window.__firebase_config) {
+                    try {
+                        setFirebaseConfig(JSON.parse(window.__firebase_config));
+                        setIsConfigured(true);
+                    } catch (e) { console.error("Failed to parse window config"); }
+                    return;
+                }
 
-                const unsubscribe = window.Firebase.onAuthStateChanged(auth, async (u) => {
-                    if (u) {
-                        // Fetch User Details to get Org ID
-                        const userSnap = await window.Firebase.getDoc(window.Firebase.doc(db, 'artifacts', window.__app_id || 'default', 'users', u.uid));
-                        if (userSnap.exists()) {
-                            const userData = userSnap.data();
-                            // Fetch Org Details to get Subscription Status & Name
-                            const orgSnap = await window.Firebase.getDoc(window.Firebase.doc(db, 'artifacts', window.__app_id || 'default', 'organizations', userData.orgId));
-                            if (orgSnap.exists()) {
-                                const od = orgSnap.data();
-                                setOrg(od);
-                                setOrgData(prev => ({...prev, orgName: od.name})); // Lock Org Name
-                                setUser({ ...u, ...userData });
-                            }
-                        }
-                    } else {
-                        setUser(null);
-                        setOrg(null);
-                    }
-                    setLoading(false);
-                });
-                return () => unsubscribe();
+                // 2. Check LocalStorage (Local env)
+                const localConfig = localStorage.getItem('d8_firebase_config');
+                if (localConfig) {
+                    try {
+                        setFirebaseConfig(JSON.parse(localConfig));
+                        setIsConfigured(true);
+                    } catch (e) { console.error("Failed to parse local config"); }
+                    return;
+                }
+
+                // 3. No config found -> Stop loading, show Setup
+                setLoading(false);
             }, []);
+
+            // --- Auth Listener ---
+            useEffect(() => {
+                if (!isConfigured || !firebaseConfig) return;
+
+                try {
+                    // Prevent re-init
+                    if (!window.Firebase.getApps?.length) {
+                        window.Firebase.initializeApp(firebaseConfig);
+                    } else {
+                        // Already init, maybe by a previous render or other script
+                        // Just continue
+                    }
+                    
+                    const auth = window.Firebase.getAuth();
+                    const db = window.Firebase.getFirestore();
+                    
+                    setLoading(true); // Start loading Auth check
+
+                    const unsubscribe = window.Firebase.onAuthStateChanged(auth, async (u) => {
+                        if (u) {
+                            const appId = window.__app_id || 'default-app';
+                            // Fetch User Details
+                            const userSnap = await window.Firebase.getDoc(window.Firebase.doc(db, 'artifacts', appId, 'users', u.uid));
+                            if (userSnap.exists()) {
+                                const userData = userSnap.data();
+                                // Fetch Org Details
+                                const orgSnap = await window.Firebase.getDoc(window.Firebase.doc(db, 'artifacts', appId, 'organizations', userData.orgId));
+                                if (orgSnap.exists()) {
+                                    const od = orgSnap.data();
+                                    setOrg(od);
+                                    setOrgData(prev => ({...prev, orgName: od.name}));
+                                    setUser({ ...u, ...userData });
+                                }
+                            }
+                        } else {
+                            setUser(null);
+                            setOrg(null);
+                        }
+                        setLoading(false);
+                    });
+                    return () => unsubscribe();
+                } catch (err) {
+                    console.error("Firebase Init Error:", err);
+                    setLoading(false);
+                }
+            }, [isConfigured, firebaseConfig]);
+
+            const handleConfigSaved = (newConfig) => {
+                setFirebaseConfig(newConfig);
+                setIsConfigured(true);
+            };
 
             const handleLogout = async () => {
                 const auth = window.Firebase.getAuth();
                 await window.Firebase.signOut(auth);
+                // Optionally clear state
+                setUser(null);
+                setOrg(null);
             };
 
             const handleSubscribe = async () => {
                 if (!user || !user.orgId) return;
                 const db = window.Firebase.getFirestore();
-                // Simulate purchase by updating DB directly
-                await window.Firebase.updateDoc(window.Firebase.doc(db, 'artifacts', window.__app_id || 'default', 'organizations', user.orgId), {
+                const appId = window.__app_id || 'default-app';
+                await window.Firebase.updateDoc(window.Firebase.doc(db, 'artifacts', appId, 'organizations', user.orgId), {
                     subscriptionStatus: 'active'
                 });
                 setOrg(prev => ({...prev, subscriptionStatus: 'active'}));
             };
 
+            // --- RENDER LOGIC ---
+            
+            // 1. Setup Screen (If no config)
+            if (!isConfigured) {
+                return <FirebaseConfigForm onConfigSaved={handleConfigSaved} />;
+            }
+
+            // 2. Loading Screen
             if (loading) return <div className="h-screen flex items-center justify-center text-gray-500">Loading Architect...</div>;
 
+            // 3. Auth Screen
             if (!user) return <AuthPage />;
 
+            // 4. Paywall
             if (org && org.subscriptionStatus !== 'active') return <Paywall onSubscribe={handleSubscribe} orgName={org.name} />;
 
+            // 5. Dashboard
             return <Dashboard user={user} orgData={orgData} setOrgData={setOrgData} onLogout={handleLogout} db={window.Firebase.getFirestore()} />;
         };
 
